@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { auth, db } from './firebase';
-import { useNavigate } from 'react-router-dom';
 import { collection, getDocs } from 'firebase/firestore';
 import { signOut } from 'firebase/auth';
+import Navbar from './Navbar';
+import Home from './Home';
+import Login from './Login';
+import Signup from './Signup';
+import Layout from './Layout';
+import './App.css';
 
 function Main() {
   const [user, setUser] = useState(null);
   const [data, setData] = useState([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
@@ -19,43 +24,32 @@ function Main() {
   useEffect(() => {
     if (user) {
       const fetchData = async () => {
-        const querySnapshot = await getDocs(collection(db, "users"));
-        setData(querySnapshot.docs.map(doc => doc.data()));
+        const querySnapshot = await getDocs(collection(db, 'users'));
+        setData(querySnapshot.docs.map((doc) => doc.data()));
       };
       fetchData();
     }
   }, [user]);
 
   const handleLogout = async () => {
-      try {
-        await signOut(auth);
-        navigate('/login');
-      } catch (error) {
-        console.error("Logout error:", error);
-      }
-    };
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
 
-    return (
-      <div>
-        <h1>Welcome to My App</h1>
-        {user ? (
-          <div>
-            Logged in as {user.email}
-            <button onClick={handleLogout}>Logout</button>
-            <ul>
-              {data.map((item, index) => (
-                <li key={index}>{item.name}</li>
-              ))}
-            </ul>
-          </div>
-        ) : (
-          <div>
-            <p>Please log in to view your data.</p>
-            <button onClick={() => navigate('/login')}>Login</button>
-            <button onClick={() => navigate('/signup')}>Sign Up</button>
-          </div>
-        )}
-      </div>
+  return (
+      <Router>
+        <Navbar user={user} handleLogout={handleLogout} />
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route path="/home" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+          </Route>
+        </Routes>
+      </Router>
     );
 }
 
