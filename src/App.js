@@ -1,23 +1,43 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { useEffect, useState } from 'react';
+import { auth, db } from './firebase';
+import { signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
+import { collection, getDocs } from 'firebase/firestore';
 
 function App() {
+  const [user, setUser] = useState(null);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      const fetchData = async () => {
+        const querySnapshot = await getDocs(collection(db, "users"));
+        setData(querySnapshot.docs.map(doc => doc.data()));
+      };
+      fetchData();
+    }
+  }, [user]);
+
+  const handleLogin = () => {
+    signInWithEmailAndPassword(auth, 'email@example.com', 'password')
+      .catch((error) => console.error("Authentication error:", error));
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Welcome to My App</h1>
+      {user ? <div>Logged in as {user.email}</div> : <button onClick={handleLogin}>Login</button>}
+      <ul>
+        {data.map((item, index) => (
+          <li key={index}>{item.name}</li>
+        ))}
+      </ul>
     </div>
   );
 }
