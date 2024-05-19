@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { BsHouse } from 'react-icons/bs';
 import { CgUserList } from 'react-icons/cg';
 import { BsList } from "react-icons/bs";
@@ -22,7 +21,6 @@ import './App.css';
 
 function Navbar({ user, handleLogout }) {
   const [openBasic, setOpenBasic] = useState(false);
-  const navigate = useNavigate();
 
   return (
     <MDBNavbar expand="lg" light bgColor="light" className="navbar">

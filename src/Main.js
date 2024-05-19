@@ -12,7 +12,6 @@ import './App.css';
 
 function Main() {
   const [user, setUser] = useState(null);
-  const [data, setData] = useState([]);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
@@ -20,16 +19,6 @@ function Main() {
     });
     return () => unsubscribe();
   }, []);
-
-  useEffect(() => {
-    if (user) {
-      const fetchData = async () => {
-        const querySnapshot = await getDocs(collection(db, 'users'));
-        setData(querySnapshot.docs.map((doc) => doc.data()));
-      };
-      fetchData();
-    }
-  }, [user]);
 
   const handleLogout = async () => {
     try {
