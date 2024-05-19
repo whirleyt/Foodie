@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signOut } from 'firebase/auth';
 import { BsHouse } from 'react-icons/bs';
-import { CgUserList } from "react-icons/cg";
+import { CgUserList } from 'react-icons/cg';
+import { BsList } from "react-icons/bs";
 import {
   MDBContainer,
   MDBNavbar,
@@ -18,7 +18,6 @@ import {
   MDBDropdownItem,
   MDBCollapse,
 } from 'mdb-react-ui-kit';
-import { auth } from './firebase';
 import './App.css';
 
 function Navbar({ user, handleLogout }) {
@@ -26,70 +25,74 @@ function Navbar({ user, handleLogout }) {
   const navigate = useNavigate();
 
   return (
-    <MDBNavbar expand='lg' light bgColor='light' className='navbar'>
+    <MDBNavbar expand="lg" light bgColor="light" className="navbar">
       <MDBContainer fluid>
-        <MDBNavbarBrand href='/'>
-          Foodie
-        </MDBNavbarBrand>
+        <div class="logo">
+            <MDBNavbarBrand href="/">Foodie</MDBNavbarBrand>
+        </div>
 
         <MDBNavbarToggler
-          aria-controls='navbarSupportedContent'
-          aria-expanded='false'
-          aria-label='Toggle navigation'
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
           onClick={() => setOpenBasic(!openBasic)}
         >
-          <MDBIcon icon='bars' fas />
+          <MDBIcon icon="bars" fas />
         </MDBNavbarToggler>
 
-        <MDBCollapse navbar open={openBasic}>
-          <MDBNavbarNav className='mr-auto mb-2 mb-lg-0 navbar-nav'>
-            <MDBNavbarItem className='nav-item'>
-              <MDBNavbarLink active aria-current='page' href='/home' role="button">
-                <BsHouse style={{ fontSize: '20px' }}/>
-              </MDBNavbarLink>
-            </MDBNavbarItem>
-            <MDBNavbarItem className='nav-item'>
-              <MDBNavbarLink href='#'>
-                <MDBIcon icon='link' fas />
-              </MDBNavbarLink>
-            </MDBNavbarItem>
-            {user && (
-              <MDBNavbarItem className='nav-item user-info'>
-                <span>Logged in as {user.displayName}</span>
-              </MDBNavbarItem>
-            )}
-            {user && (
-              <MDBDropdown>
-                <MDBDropdownToggle tag='a' className='nav-link' role='button'>
-                </MDBDropdownToggle>
-                <MDBDropdownMenu>
-                  <MDBDropdownItem link>
-                    <MDBIcon icon='cog' fas /> View Profile
-                  </MDBDropdownItem>
-                  <MDBDropdownItem link>
-                    <MDBIcon icon='cogs' fas /> Settings
-                  </MDBDropdownItem>
-                  <MDBDropdownItem link onClick={handleLogout}>
-                     <MDBIcon icon='ellipsis-h' fas /> Log out
-                  </MDBDropdownItem>
-                </MDBDropdownMenu>
-              </MDBDropdown>
-            )}
-            {!user && (
-            <MDBDropdown>
-                <MDBDropdownToggle tag="a" className="nav-link custom-dropdown-toggle" role="button">
-                          <CgUserList style={{ fontSize: '22px' }}/>
-                </MDBDropdownToggle>
-                <MDBDropdownMenu>
-                  <MDBDropdownItem link href='login'>
-                    <MDBIcon icon='cog' fas /> Login
-                  </MDBDropdownItem>
-                  <MDBDropdownItem link href='signup'>
-                    <MDBIcon icon='cogs' fas /> Sign up
-                  </MDBDropdownItem>
-                </MDBDropdownMenu>
-            </MDBDropdown>
-			)}
+        <MDBCollapse navbar show={openBasic}>
+          <MDBNavbarNav className="d-flex align-items-center w-100">
+            <div className="ms-auto d-flex align-items-center">
+              {user ? (
+                <div className="authorized">
+				  <MDBNavbarItem>
+                    <MDBNavbarLink active aria-current="page" href="/home">
+                        <BsHouse class="home-icon" />
+                    </MDBNavbarLink>
+                  </MDBNavbarItem>
+                  <MDBNavbarItem className="nav-item user-info">
+                    <span>Logged in as <span class="name">{user.displayName}</span></span>
+                  </MDBNavbarItem>
+                  <MDBDropdown>
+                    <MDBDropdownToggle tag="a" style={{ fontSize: '19px' }} className="nav-link toggle custom-dropdown-toggle" role="button">
+                        <BsList />
+                    </MDBDropdownToggle>
+                    <MDBDropdownMenu style={{ fontSize: '10px' }}>
+                      <MDBDropdownItem link>
+                        <MDBIcon icon="cog" fas /> View Profile
+                      </MDBDropdownItem>
+                      <MDBDropdownItem link>
+                        <MDBIcon icon="cogs" fas /> Settings
+                      </MDBDropdownItem>
+                      <MDBDropdownItem link onClick={handleLogout}>
+                        <MDBIcon icon="sign-out-alt" fas /> Log out
+                      </MDBDropdownItem>
+                    </MDBDropdownMenu>
+                  </MDBDropdown>
+                </div>
+              ) : (
+                <div className="unauthorized">
+                  <MDBNavbarItem>
+                    <MDBNavbarLink active aria-current="page" href="/home">
+                       <BsHouse class="home-icon" />
+                    </MDBNavbarLink>
+                  </MDBNavbarItem>
+                  <MDBDropdown>
+                    <MDBDropdownToggle tag="a" className="nav-link custom-dropdown-toggle" role="button">
+                      <CgUserList style={{ fontSize: '20px' }} />
+                    </MDBDropdownToggle>
+                    <MDBDropdownMenu style={{ fontSize: '10px' }}>
+                      <MDBDropdownItem link href="login">
+                        <MDBIcon icon="sign-in-alt" fas /> Login
+                      </MDBDropdownItem>
+                      <MDBDropdownItem link href="signup">
+                        <MDBIcon icon="user-plus" fas /> Sign up
+                      </MDBDropdownItem>
+                    </MDBDropdownMenu>
+                  </MDBDropdown>
+                </div>
+              )}
+            </div>
           </MDBNavbarNav>
         </MDBCollapse>
       </MDBContainer>
