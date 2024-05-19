@@ -25,7 +25,7 @@ function Navbar({ user, handleLogout }) {
   return (
     <MDBNavbar expand="lg" light bgColor="light" className="navbar">
       <MDBContainer fluid>
-        <div class="logo">
+        <div className="logo">
             <MDBNavbarBrand href="/">Foodie</MDBNavbarBrand>
         </div>
 
@@ -38,18 +38,18 @@ function Navbar({ user, handleLogout }) {
           <MDBIcon icon="bars" fas />
         </MDBNavbarToggler>
 
-        <MDBCollapse navbar show={openBasic}>
+        <MDBCollapse navbar show={openBasic ? 'true' : undefined}>
           <MDBNavbarNav className="d-flex align-items-center w-100">
             <div className="ms-auto d-flex align-items-center">
               {user ? (
                 <div className="authorized">
 				  <MDBNavbarItem>
                     <MDBNavbarLink active aria-current="page" href="/home">
-                        <BsHouse class="home-icon" />
+                        <BsHouse className="home-icon" />
                     </MDBNavbarLink>
                   </MDBNavbarItem>
                   <MDBNavbarItem className="nav-item user-info">
-                    <span>Logged in as <span class="name">{user.displayName}</span></span>
+                    <span>Logged in as <span className="name">{user.displayName}</span></span>
                   </MDBNavbarItem>
                   <MDBDropdown>
                     <MDBDropdownToggle tag="a" style={{ fontSize: '19px' }} className="nav-link toggle custom-dropdown-toggle" role="button">
@@ -72,7 +72,7 @@ function Navbar({ user, handleLogout }) {
                 <div className="unauthorized">
                   <MDBNavbarItem>
                     <MDBNavbarLink active aria-current="page" href="/home">
-                       <BsHouse class="home-icon" />
+                       <BsHouse className="home-icon" />
                     </MDBNavbarLink>
                   </MDBNavbarItem>
                   <MDBDropdown>

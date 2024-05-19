@@ -66,3 +66,11 @@ body, html, main {
 	color: #8dc6ff;
 	font-weight: bold;
 }
+
+button {
+  background-color: #fff;
+}
+
+button.active {
+  background-color: #f0f0f0;
+}
