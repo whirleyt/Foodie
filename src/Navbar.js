@@ -18,9 +18,11 @@ import {
   MDBCollapse,
 } from 'mdb-react-ui-kit';
 import './App.css';
+import { useNavigate } from 'react-router-dom';
 
 function Navbar({ user, handleLogout }) {
   const [openBasic, setOpenBasic] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <MDBNavbar expand="lg" light bgColor="light" className="navbar">
@@ -56,13 +58,13 @@ function Navbar({ user, handleLogout }) {
                         <BsList />
                     </MDBDropdownToggle>
                     <MDBDropdownMenu style={{ fontSize: '10px' }}>
-                      <MDBDropdownItem link>
+                      <MDBDropdownItem link href="profile">
                         <MDBIcon icon="cog" fas /> View Profile
                       </MDBDropdownItem>
                       <MDBDropdownItem link>
                         <MDBIcon icon="cogs" fas /> Settings
                       </MDBDropdownItem>
-                      <MDBDropdownItem link onClick={handleLogout}>
+                      <MDBDropdownItem link onClick={() => handleLogout(navigate)}>
                         <MDBIcon icon="sign-out-alt" fas /> Log out
                       </MDBDropdownItem>
                     </MDBDropdownMenu>

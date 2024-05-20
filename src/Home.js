@@ -3,26 +3,13 @@ import { auth, db, storage } from './firebase';
 import { collection, addDoc, getDocs } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
-const Home = () => {
-  const [posts, setPosts] = useState([]);
+const Home = ({ posts }) => {
+  const [setPosts] = useState([]);
   const [text, setText] = useState('');
   const [photo, setPhoto] = useState(null);
   const [photoUrl, setPhotoUrl] = useState('');
   const [location, setLocation] = useState('');
   const [activeTab, setActiveTab] = useState('Recipes');
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const postsRef = await getDocs(collection(db, 'posts'));
-        const postsArray = postsRef.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        setPosts(postsArray);
-      } catch (error) {
-        console.error('Error fetching posts: ', error);
-      }
-    };
-    fetchData();
-  }, []);
 
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
@@ -93,11 +80,11 @@ const Home = () => {
         <button onClick={handlePost}>Post</button>
       </div>
       <div>
-        {posts.map(post => (
+        {posts && posts.map(post => (
           post.type === activeTab && (
             <div key={post.id}>
               <p>User: {post.userId}</p>
-              <p>Time: {post.timestamp.toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true })}</p>
+              <p>Time:  </p>
               <p>Content: {post.textContent}</p>
               <p>Location: {post.location}</p>
               {post.photoUrl && <img src={post.photoUrl} alt="Post" style={{ maxWidth: '100px', maxHeight: '100px' }} />}
