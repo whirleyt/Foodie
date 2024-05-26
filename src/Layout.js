@@ -1,16 +1,13 @@
-import React, { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import { db } from './firebase';
-import { collection, getDocs } from 'firebase/firestore';
 
-const Layout = ({ posts, user }) => {
+const Layout = ({ posts, user, setPosts }) => {
 
   return (
     <div>
       <header>{}</header>
       <main>
         {}
-        <Outlet posts={posts} user={user}/>
+        <Outlet posts={posts} user={user} setPosts={setPosts}/>
       </main>
       <footer>{}</footer>
     </div>

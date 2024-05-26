@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { auth, db, storage } from './firebase';
-import { collection, addDoc, getDocs } from 'firebase/firestore';
+import { collection, addDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
-const Home = ({ posts }) => {
-  const [setPosts] = useState([]);
+const Home = ({ posts, setPosts }) => {
   const [text, setText] = useState('');
   const [photo, setPhoto] = useState(null);
   const [photoUrl, setPhotoUrl] = useState('');
@@ -52,6 +51,7 @@ const Home = ({ posts }) => {
           id: docRef.id,
           ...postData
         };
+
         setPosts([newPost, ...posts]);
 
         setText('');

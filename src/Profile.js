@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { auth, db } from './firebase';
-import { collection, getDocs } from 'firebase/firestore';
+import { auth } from './firebase';
 
 const Profile = ({ posts, user }) => {
 

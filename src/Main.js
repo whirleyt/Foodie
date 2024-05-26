@@ -50,8 +50,8 @@ function Main() {
       <Router>
         <Navbar user={user} handleLogout={handleLogout} />
         <Routes>
-          <Route path="/" element={<Layout posts={posts} user={user} />}>
-            <Route path="/home" element={<Home posts={posts} />} />
+          <Route path="/" element={<Layout posts={posts} user={user} setPosts={setPosts} />}>
+            <Route path="/home" element={<Home posts={posts} setPosts={setPosts} />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/profile" element={<Profile posts={posts} user={user} />} />
