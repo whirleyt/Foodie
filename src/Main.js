@@ -14,6 +14,7 @@ import { db } from './firebase';
 
 function Main() {
   const [user, setUser] = useState(null);
+  const [users, setUsers] = useState(null);
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -43,18 +44,29 @@ function Main() {
           console.error('Error fetching posts: ', error);
         }
       };
+      const fetchUsers = async () => {
+		try {
+  		    const usersRef = collection(db, 'users');
+            const usersSnapshot = await getDocs(usersRef);
+            const usersArray = usersSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            setUsers(usersArray);
+        } catch (error) {
+          console.error('Error fetching users: ', error);
+        }
+      }
       fetchPosts();
+      fetchUsers();
     }, []);
 
   return (
       <Router>
         <Navbar user={user} handleLogout={handleLogout} />
         <Routes>
-          <Route path="/" element={<Layout posts={posts} user={user} setPosts={setPosts} />}>
-            <Route path="/home" element={<Home posts={posts} setPosts={setPosts} />} />
+          <Route path="/" element={<Layout posts={posts} user={user} setPosts={setPosts} users={users} />}>
+            <Route path="/home" element={<Home posts={posts} setPosts={setPosts} users={users}/>} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/profile" element={<Profile posts={posts} user={user} />} />
+            <Route path="/profile" element={<Profile posts={posts} user={user} users={users}/>} />
           </Route>
         </Routes>
       </Router>
